@@ -15,8 +15,8 @@ var digits = map[string]int{
 	"PR": 9, "SC": 9,
 }
 
-func generate(state string) string {
-	return "123.456.789-00" // Placeholder for actual CPF generation logic
+func generate(state string) (string, error) {
+	return "123.456.789-00", nil // Placeholder for actual CPF generation logic
 }
 
 func regionDigitByState(state string) int {
