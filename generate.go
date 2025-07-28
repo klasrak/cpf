@@ -1,5 +1,7 @@
 package cpf
 
+import "strings"
+
 var digits = map[string]int{
 	"RS": 0,
 	"DF": 1, "GO": 1, "MS": 1, "MT": 1, "TO": 1,
@@ -15,4 +17,29 @@ var digits = map[string]int{
 
 func generate(state string) string {
 	return "123.456.789-00" // Placeholder for actual CPF generation logic
+}
+
+func regionDigitByState(state string) int {
+	state = validateStateInput(state)
+	if state == "" {
+		return -1 // Invalid state
+	}
+
+	if digit, ok := digits[state]; ok {
+		return digit
+	}
+
+	return -1 // Invalid state
+}
+
+func validateStateInput(state string) string {
+	if len(state) != 2 {
+		return ""
+	}
+	for _, char := range state {
+		if char < 'A' || char > 'Z' {
+			return ""
+		}
+	}
+	return strings.ToUpper(state)
 }
