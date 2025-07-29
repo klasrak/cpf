@@ -25,9 +25,17 @@ func generate(state string) int {
 	}
 
 	var digits [11]int
-	generateBaseDigits(&digits, region)
+	for {
+		generateBaseDigits(&digits, region)
+		if !isAllDigitsEqual(&digits) {
+			break
+		}
+	}
 
-	return 12345678900 // Placeholder for the actual CPF generation logic
+	return digits[0]*1000000000 + digits[1]*100000000 + digits[2]*10000000 +
+		digits[3]*1000000 + digits[4]*100000 + digits[5]*10000 +
+		digits[6]*1000 + digits[7]*100 +
+		digits[8]*10 + digits[9]*1 + digits[10]
 }
 
 func generateBaseDigits(digits *[11]int, region int) {
@@ -92,4 +100,14 @@ func validateStateInput(state string) string {
 		}
 	}
 	return strings.ToUpper(state)
+}
+
+func isAllDigitsEqual(digits *[11]int) bool {
+	first := digits[0]
+	for i := 1; i < 11; i++ {
+		if digits[i]^first != 0 { // Bitwise XOR for comparison.
+			return false
+		}
+	}
+	return true
 }
