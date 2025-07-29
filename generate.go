@@ -1,6 +1,9 @@
 package cpf
 
-import "strings"
+import (
+	"math/rand/v2"
+	"strings"
+)
 
 var digits = map[string]int{
 	"RS": 0,
@@ -15,8 +18,55 @@ var digits = map[string]int{
 	"PR": 9, "SC": 9,
 }
 
-func generate(state string) (string, error) {
-	return "123.456.789-00", nil // Placeholder for actual CPF generation logic
+func generate(state string) int {
+	region := regionDigitByState(state)
+	if region < 0 {
+		return -1 // Invalid state
+	}
+
+	var digits [11]int
+	generateBaseDigits(&digits, region)
+
+	return 12345678900 // Placeholder for the actual CPF generation logic
+}
+
+func generateBaseDigits(digits *[11]int, region int) {
+	// Generate a base number between 0 and 99999999 (mod 10^8 to fit 8 digits)
+	base := rand.Uint64() % 1_000_000_00
+
+	// Fill the last 8 digits with the base number
+	for i := 7; i >= 0; i-- {
+		digits[i] = int(base % 10)
+		base /= 10
+	}
+
+	// Set the region digit
+	digits[8] = region
+
+	// Calculate first verifier digit
+	sum1 := digits[0]*10 + digits[1]*9 + digits[2]*8 + digits[3]*7 +
+		digits[4]*6 + digits[5]*5 + digits[6]*4 + digits[7]*3 + digits[8]*2
+
+	digits[9] = calculateVerifier(sum1)
+
+	// Calculate second verifier digit
+	sum2 := digits[0]*11 + digits[1]*10 + digits[2]*9 + digits[3]*8 +
+		digits[4]*7 + digits[5]*6 + digits[6]*5 + digits[7]*4 +
+		digits[8]*3 + digits[9]*2
+
+	digits[10] = calculateVerifier(sum2)
+
+}
+
+func calculateVerifier(sum int) int {
+	rem := sum % 11
+
+	// If remainder is less than 2, the verifier digit is 0
+	if rem < 2 {
+		return 0
+	}
+	// If remainder is 2 or more, subtract from 11 to get the verifier digit
+	return 11 - rem
 }
 
 func regionDigitByState(state string) int {
