@@ -1,4 +1,4 @@
-# cpf: High-Performance Brazilian CPF Utilities 🚀
+# [cpf](https://github.com/klasrak/cpf): High-Performance Brazilian CPF Utilities 🚀
 
 [![Go Version](https://img.shields.io/badge/Go-1.20%2B-blue.svg)](https://golang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -6,7 +6,7 @@
 [![GoDoc](https://img.shields.io/badge/GoDoc-Reference-blue.svg)](https://pkg.go.dev/github.com/klasrak/cpf)
 [![GitHub Stars](https://img.shields.io/github/stars/klasrak/cpf.svg?style=social)](https://github.com/klasrak/cpf)
 
-Welcome to **CPF-Go**, a blazing-fast, zero-allocation (where possible) Go package designed for seamless handling of Brazilian CPF (Cadastro de Pessoas Físicas) numbers. Whether you're generating valid CPFs tied to specific states, validating existing ones, or toggling between masked and unmasked formats, this library prioritizes **performance**, **simplicity**, and **reliability**. Built with efficiency in mind, it avoids unnecessary allocations and executes operations in nanoseconds—perfect for high-throughput applications like APIs, data processing pipelines, or compliance tools.
+Welcome to **[cpf](https://github.com/klasrak/cpf)**, a *blazing-fast*, zero-allocation (where possible) Go package designed for seamless handling of Brazilian CPF (Cadastro de Pessoas Físicas) numbers. Whether you're generating valid CPFs tied to specific states, validating existing ones, or toggling between masked and unmasked formats, this library prioritizes **performance**, **simplicity**, and **reliability**. Built with efficiency in mind, it avoids unnecessary allocations and executes operations in nanoseconds—perfect for high-throughput applications like APIs, data processing pipelines, or compliance tools.
 
 cpf leverages Go's strengths for optimal speed. It's open-source under the MIT license, so feel free to fork, contribute, or integrate it into your projects!
 
@@ -230,14 +230,7 @@ All 26 Brazilian states plus Brasilia (capital) via two-letter codes:
 
 ## 🤝 Contributing
 
-Fork the repo, create a branch, and submit a PR. Follow these steps:
-1. Clone: `git clone https://github.com/klasrak/cpf.git`
-2. Branch: `git checkout -b feature/awesome-thing`
-3. Test: `go test ./...`
-4. Bench: `go test -bench=.`
-5. Commit & PR!
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for details. Issues welcome for bugs, features, or docs.
+Fork the repo, do your things and be happy <3.
 
 ## 📜 License
 
