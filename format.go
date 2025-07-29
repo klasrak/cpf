@@ -1,6 +1,9 @@
 package cpf
 
-var pow10 = [11]int{1000000000, 100000000, 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1, 0}
+var (
+	pow10 = [11]int{1000000000, 100000000, 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1, 0}
+	pow11 = [11]int{10000000000, 1000000000, 100000000, 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1}
+)
 
 func maskInt(cpf int) string {
 	if cpf <= 0 {
@@ -9,7 +12,7 @@ func maskInt(cpf int) string {
 
 	digits := toDigits(int64(cpf))
 
-	result := bufferToString(&digits)
+	result := bufferToStringMasked(&digits)
 
 	if len(result) != 14 {
 		return ""
@@ -24,7 +27,7 @@ func maskString(cpf string) string {
 		return ""
 	}
 
-	result := bufferToString(&digits)
+	result := bufferToStringMasked(&digits)
 
 	if len(result) != 14 {
 		return ""
@@ -33,13 +36,41 @@ func maskString(cpf string) string {
 	return result
 }
 
-func bufferToString(digits *[11]int) string {
+func unmask(cpf string) string {
+	var digits [11]int
+	if ok := extractDigits(cpf, &digits); !ok {
+		return ""
+	}
+
+	return bufferToStringUnmasked(&digits)
+}
+
+func unmaskToInt(cpf string) int {
+	var digits [11]int
+	if ok := extractDigits(cpf, &digits); !ok {
+		return -1
+	}
+
+	return toNumber(&digits, &pow11)
+}
+
+func bufferToStringMasked(digits *[11]int) string {
 	var buf [14]byte
 	buf[3], buf[7], buf[11] = '.', '.', '-'
 
 	idx := [11]int{0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13}
 	for i, d := range digits {
 		buf[idx[i]] = byte(d + '0')
+	}
+
+	return string(buf[:])
+}
+
+func bufferToStringUnmasked(digits *[11]int) string {
+	var buf [11]byte
+
+	for i, d := range digits {
+		buf[i] = byte(d + '0')
 	}
 
 	return string(buf[:])
@@ -69,10 +100,10 @@ func toDigits(num int64) [11]int {
 	return digits
 }
 
-func toNumber(digits *[11]int) int {
+func toNumber(digits, pow *[11]int) int {
 	result := 0
 	for i, d := range digits {
-		result += d * pow10[i]
+		result += d * pow[i]
 	}
 	return result
 }

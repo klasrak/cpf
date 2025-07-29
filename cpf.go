@@ -23,7 +23,7 @@ package cpf
 //	Returns:
 //	   int: A valid CPF number or -1 if the state is invalid.
 func New(state string) int {
-	return generate(state)
+	return newValidCPF(state)
 }
 
 // WithMask almost same as New, but returns a formatted CPF number with mask (e.g., "111.444.777-35") for the given state.
@@ -63,4 +63,26 @@ func Mask(cpf any) string {
 	default:
 		return ""
 	}
+}
+
+// Unmask removes the mask from a formatted CPF string and returns it as a plain string.
+// If the input is invalid, it returns an empty string.
+//
+//	Parameters:
+//		cpf string: A formatted CPF number (e.g., "111.444.777-35").
+//	Returns:
+//		string: A plain CPF number without mask or an empty string if the input is invalid
+func Unmask(cpf string) string {
+	return unmask(cpf)
+}
+
+// UnmaskToInt removes the mask from a formatted CPF string and returns it as an integer.
+// If the input is invalid, it returns -1.
+//
+//	Parameters:
+//		cpf string: A formatted CPF number (e.g., "111.444.777-35").
+//	Returns:
+//		int: A plain CPF number as an integer or -1 if the input is invalid
+func UnmaskToInt(cpf string) int {
+	return unmaskToInt(cpf)
 }

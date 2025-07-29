@@ -2,7 +2,7 @@ package cpf
 
 import "testing"
 
-func TestGenerate(t *testing.T) {
+func TestNew(t *testing.T) {
 	type testCase struct {
 		state     string
 		expectErr bool

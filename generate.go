@@ -21,7 +21,7 @@ var (
 	}
 )
 
-func generate(state string) int {
+func newValidCPF(state string) int {
 	region := regionDigitByState(state)
 	if region < 0 {
 		return region // Invalid state
@@ -35,7 +35,7 @@ func generate(state string) int {
 		}
 	}
 
-	return toNumber(&digits)
+	return toNumber(&digits, &pow10)
 }
 
 func generateBaseDigits(digits *[11]int, region int) {

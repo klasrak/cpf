@@ -144,6 +144,56 @@ func TestWithMask(t *testing.T) {
 	}
 }
 
+func TestUnmask(t *testing.T) {
+	type testCase struct {
+		cpf      string
+		expected string
+	}
+
+	testCases := []testCase{
+		{"111.444.777-35", "11144477735"},
+		{"001.234.567-89", "00123456789"},
+		{"12345678901", "12345678901"},
+		{"123", ""},
+		{"!@#$%^&*()", ""},
+		{"", ""},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.cpf, func(t *testing.T) {
+			result := Unmask(tc.cpf)
+			if result != tc.expected {
+				t.Errorf("Expected %s, got %s", tc.expected, result)
+			}
+		})
+	}
+}
+
+func TestUnmaskToInt(t *testing.T) {
+	type testCase struct {
+		cpf      string
+		expected int
+	}
+
+	testCases := []testCase{
+		{"111.444.777-35", 11144477735},
+		{"001.234.567-89", 123456789},
+		{"12345678901", 12345678901},
+		{"123", -1},
+		{"!@#$%^&*()", -1},
+		{"", -1},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.cpf, func(t *testing.T) {
+			result := UnmaskToInt(tc.cpf)
+			if result != tc.expected {
+				t.Errorf("Expected %d, got %d", tc.expected, result)
+			}
+		})
+	}
+}
+
 func BenchmarkMask(b *testing.B) {
 	for b.Loop() {
 		Mask(11144477735)
@@ -153,5 +203,17 @@ func BenchmarkMask(b *testing.B) {
 func BenchmarkWithMask(b *testing.B) {
 	for b.Loop() {
 		WithMask("SP")
+	}
+}
+
+func BenchmarkUnmask(b *testing.B) {
+	for b.Loop() {
+		Unmask("111.444.777-35")
+	}
+}
+
+func BenchmarkUnmaskToInt(b *testing.B) {
+	for b.Loop() {
+		UnmaskToInt("111.444.777-35")
 	}
 }
