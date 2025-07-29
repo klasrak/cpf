@@ -9,6 +9,31 @@ func maskInt(cpf int) string {
 
 	digits := toDigits(int64(cpf))
 
+	result := bufferToString(&digits)
+
+	if len(result) != 14 {
+		return ""
+	}
+
+	return result
+}
+
+func maskString(cpf string) string {
+	var digits [11]int
+	if ok := extractDigits(cpf, &digits); !ok {
+		return ""
+	}
+
+	result := bufferToString(&digits)
+
+	if len(result) != 14 {
+		return ""
+	}
+
+	return result
+}
+
+func bufferToString(digits *[11]int) string {
 	var buf [14]byte
 	buf[3], buf[7], buf[11] = '.', '.', '-'
 
@@ -18,6 +43,21 @@ func maskInt(cpf int) string {
 	}
 
 	return string(buf[:])
+}
+
+func extractDigits(cpf string, digits *[11]int) bool {
+	var count int
+	for i := 0; i < len(cpf); i++ {
+		c := cpf[i]
+		if c >= '0' && c <= '9' {
+			if count >= 11 {
+				return false
+			}
+			digits[count] = int(c - '0')
+			count++
+		}
+	}
+	return count == 11
 }
 
 func toDigits(num int64) [11]int {

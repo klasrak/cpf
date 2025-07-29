@@ -59,7 +59,7 @@ func Mask(cpf any) string {
 	case uint64: // Note: uint64 may exceed valid CPF range, but we still format it right to left, e.g 111112345678901 will be formatted as 123.456.789-01
 		return maskInt(int(v))
 	case string:
-		return ""
+		return maskString(v)
 	default:
 		return ""
 	}
