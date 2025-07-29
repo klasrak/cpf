@@ -44,7 +44,7 @@ func TestGenerate(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.state, func(t *testing.T) {
-			cpf := Generate(tc.state)
+			cpf := New(tc.state)
 
 			if !tc.expectErr {
 				if cpf < 0 {
@@ -61,6 +61,6 @@ func TestGenerate(t *testing.T) {
 
 func BenchmarkGenerate(b *testing.B) {
 	for b.Loop() {
-		Generate("SP")
+		New("SP")
 	}
 }

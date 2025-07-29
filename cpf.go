@@ -1,6 +1,6 @@
 package cpf
 
-// Generate a valid brazilian CPF number for the given state or returns -1 if the state is invalid.
+// New a valid brazilian CPF number for the given state or returns -1 if the state is invalid.
 //
 //	Parameters:
 //	   state string: A two-letter string representing the Brazilian state (e.g., "SP" for São Paulo).
@@ -23,6 +23,31 @@ package cpf
 // Divide by 11, take the remainder (204 ÷ 11 = remainder 6).
 // If remainder < 2, the digit is 0; otherwise, subtract from 11 (11 - 6 = 5).
 // Final CPF: 111.444.777-35. The generator creates valid CPFs by randomly selecting 9 digits, calculating the first check digit, appending it, then calculating the second.
-func Generate(state string) int {
+func New(state string) int {
 	return generate(state)
+}
+
+func WithMask(state string) string {
+	return Mask(New(state))
+}
+
+func Mask(cpf any) string {
+	switch v := cpf.(type) {
+	case int:
+		return maskInt(cpf.(int))
+	case int32:
+		return maskInt(int(v))
+	case int64: // Note: uint64 may exceed valid CPF range, but we still format it right to left, e.g 111112345678901 will be formatted as 123.456.789-01
+		return maskInt(int(v))
+	case uint:
+		return maskInt(int(v))
+	case uint32:
+		return maskInt(int(v))
+	case uint64: // Note: uint64 may exceed valid CPF range, but we still format it right to left, e.g 111112345678901 will be formatted as 123.456.789-01
+		return maskInt(int(v))
+	case string:
+		return ""
+	default:
+		return ""
+	}
 }

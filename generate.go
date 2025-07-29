@@ -6,7 +6,6 @@ import (
 )
 
 var (
-	pow10        = [11]int{1000000000, 100000000, 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1, 0}
 	invalidState = -1
 	digits       = map[string]int{
 		"RS": 0,
@@ -111,13 +110,4 @@ func isAllDigitsEqual(digits *[11]int) bool {
 		}
 	}
 	return true
-}
-
-func toNumber(digits *[11]int) int {
-	result := 0
-	for i, d := range digits {
-		result += d * pow10[i]
-	}
-
-	return result
 }
