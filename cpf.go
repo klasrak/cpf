@@ -1,11 +1,11 @@
 package cpf
 
-// Generate generates a valid brazilian CPF number for the given state or returns an error if the state is invalid.
+// Generate a valid brazilian CPF number for the given state or returns -1 if the state is invalid.
 //
 //	Parameters:
 //	   state string: A two-letter string representing the Brazilian state (e.g., "SP" for São Paulo).
 //	Returns:
-//	   int: A valid CPF number.
+//	   int: A valid CPF number or -1 if the state is invalid.
 //
 // To generate a valid Brazilian CPF, start with a 9-digit number (e.g., 111.444.77<state digit>-XX) and calculate two check digits using the modulo 11 algorithm.
 //
