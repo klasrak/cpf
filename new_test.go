@@ -55,7 +55,7 @@ func TestNew(t *testing.T) {
 	}
 }
 
-func BenchmarkGenerate(b *testing.B) {
+func BenchmarkNew(b *testing.B) {
 	for b.Loop() {
 		New("SP")
 	}
