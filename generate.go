@@ -5,23 +5,27 @@ import (
 	"strings"
 )
 
-var digits = map[string]int{
-	"RS": 0,
-	"DF": 1, "GO": 1, "MS": 1, "MT": 1, "TO": 1,
-	"AC": 2, "AM": 2, "AP": 2, "PA": 2, "RO": 2, "RR": 2,
-	"CE": 3, "MA": 3, "PI": 3,
-	"AL": 4, "PB": 4, "PE": 4, "RN": 4,
-	"BA": 5, "SE": 5,
-	"MG": 6,
-	"ES": 7, "RJ": 7,
-	"SP": 8,
-	"PR": 9, "SC": 9,
-}
+var (
+	pow10        = [11]int{1000000000, 100000000, 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1, 0}
+	invalidState = -1
+	digits       = map[string]int{
+		"RS": 0,
+		"DF": 1, "GO": 1, "MS": 1, "MT": 1, "TO": 1,
+		"AC": 2, "AM": 2, "AP": 2, "PA": 2, "RO": 2, "RR": 2,
+		"CE": 3, "MA": 3, "PI": 3,
+		"AL": 4, "PB": 4, "PE": 4, "RN": 4,
+		"BA": 5, "SE": 5,
+		"MG": 6,
+		"ES": 7, "RJ": 7,
+		"SP": 8,
+		"PR": 9, "SC": 9,
+	}
+)
 
 func generate(state string) int {
 	region := regionDigitByState(state)
 	if region < 0 {
-		return -1 // Invalid state
+		return region // Invalid state
 	}
 
 	var digits [11]int
@@ -32,10 +36,7 @@ func generate(state string) int {
 		}
 	}
 
-	return digits[0]*1000000000 + digits[1]*100000000 + digits[2]*10000000 +
-		digits[3]*1000000 + digits[4]*100000 + digits[5]*10000 +
-		digits[6]*1000 + digits[7]*100 +
-		digits[8]*10 + digits[9]*1 + digits[10]
+	return toNumber(&digits)
 }
 
 func generateBaseDigits(digits *[11]int, region int) {
@@ -80,14 +81,14 @@ func calculateVerifier(sum int) int {
 func regionDigitByState(state string) int {
 	state = validateStateInput(state)
 	if state == "" {
-		return -1 // Invalid state
+		return invalidState
 	}
 
 	if digit, ok := digits[state]; ok {
 		return digit
 	}
 
-	return -1 // Invalid state
+	return invalidState
 }
 
 func validateStateInput(state string) string {
@@ -110,4 +111,13 @@ func isAllDigitsEqual(digits *[11]int) bool {
 		}
 	}
 	return true
+}
+
+func toNumber(digits *[11]int) int {
+	result := 0
+	for i, d := range digits {
+		result += d * pow10[i]
+	}
+
+	return result
 }
