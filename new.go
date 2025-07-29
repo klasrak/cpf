@@ -35,7 +35,7 @@ func newValidCPF(state string) int {
 		}
 	}
 
-	return toNumber(&digits, &pow10)
+	return toNumber(&digits)
 }
 
 func generateBaseDigits(digits *[11]int, region int) {
@@ -63,22 +63,10 @@ func generateBaseDigits(digits *[11]int, region int) {
 		digits[8]*3 + digits[9]*2
 
 	digits[10] = calculateVerifier(sum2)
-
-}
-
-func calculateVerifier(sum int) int {
-	rem := sum % 11
-
-	// If remainder is less than 2, the verifier digit is 0
-	if rem < 2 {
-		return 0
-	}
-	// If remainder is 2 or more, subtract from 11 to get the verifier digit
-	return 11 - rem
 }
 
 func regionDigitByState(state string) int {
-	state = validateStateInput(state)
+	state = sanitizeStateInput(state)
 	if state == "" {
 		return invalidState
 	}
@@ -90,7 +78,7 @@ func regionDigitByState(state string) int {
 	return invalidState
 }
 
-func validateStateInput(state string) string {
+func sanitizeStateInput(state string) string {
 	if len(state) != 2 {
 		return ""
 	}
@@ -100,14 +88,4 @@ func validateStateInput(state string) string {
 		}
 	}
 	return strings.ToUpper(state)
-}
-
-func isAllDigitsEqual(digits *[11]int) bool {
-	first := digits[0]
-	for i := 1; i < 11; i++ {
-		if digits[i]^first != 0 { // Bitwise XOR for comparison.
-			return false
-		}
-	}
-	return true
 }

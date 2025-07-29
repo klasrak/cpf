@@ -86,3 +86,25 @@ func Unmask(cpf string) string {
 func UnmaskToInt(cpf string) int {
 	return unmaskToInt(cpf)
 }
+
+// IsValid checks if the provided CPF number is valid.
+// It accepts various numeric types and strings, returning true for valid CPFs and false for invalid ones.
+//
+//	Parameters:
+//		cpf any: A CPF number in various numeric formats (int, int64, uint, uint64) or a string.
+//	Returns:
+//		bool: true if the CPF is valid, false otherwise
+func IsValid(cpf any) bool {
+	switch v := cpf.(type) {
+	case int:
+		return isValidInt(v)
+	case int64:
+		return isValidInt(int(v))
+	case uint64:
+		return isValidInt(int(v))
+	case string:
+		return isValidString(v)
+	default:
+		return false
+	}
+}

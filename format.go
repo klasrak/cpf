@@ -1,7 +1,6 @@
 package cpf
 
 var (
-	pow10 = [11]int{1000000000, 100000000, 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1, 0}
 	pow11 = [11]int{10000000000, 1000000000, 100000000, 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1}
 )
 
@@ -51,7 +50,7 @@ func unmaskToInt(cpf string) int {
 		return -1
 	}
 
-	return toNumber(&digits, &pow11)
+	return toNumber(&digits)
 }
 
 func bufferToStringMasked(digits *[11]int) string {
@@ -100,10 +99,10 @@ func toDigits(num int64) [11]int {
 	return digits
 }
 
-func toNumber(digits, pow *[11]int) int {
+func toNumber(digits *[11]int) int {
 	result := 0
 	for i, d := range digits {
-		result += d * pow[i]
+		result += d * pow11[i]
 	}
 	return result
 }
